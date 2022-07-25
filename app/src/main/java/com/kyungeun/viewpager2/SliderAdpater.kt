@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kyungeun.viewpager2.databinding.ItemSliderBinding
-import timber.log.Timber
 
-class SliderAdpater internal constructor(sliderItems : ArrayList<SliderItem>, private var listener: OnItemClickListener) : RecyclerView.Adapter<SliderViewHolder>() {
+class SliderAdpater internal constructor(
+    sliderItems: ArrayList<SliderItem>,
+    private var listener: OnItemClickListener
+) : RecyclerView.Adapter<SliderViewHolder>() {
 
     private val sliderItems: ArrayList<SliderItem>
 
@@ -17,30 +19,36 @@ class SliderAdpater internal constructor(sliderItems : ArrayList<SliderItem>, pr
     }
 
     interface OnItemClickListener {
-        fun onClickedImage(image: Int)
+        fun onClicked(item: SliderItem)
+        fun onClickedTitle(title: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
-        val binding: ItemSliderBinding = ItemSliderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding: ItemSliderBinding =
+            ItemSliderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SliderViewHolder(binding, listener)
     }
 
     override fun getItemCount(): Int = sliderItems.size
 
-    override fun onBindViewHolder(holder: SliderViewHolder, position: Int) = holder.bind(sliderItems[position],sliderItems.size)
+//  override fun onBindViewHolder(holder: SliderViewHolder, position: Int) = holder.bind(sliderItems[position])
+    override fun onBindViewHolder(holder: SliderViewHolder, position: Int) = holder.bind(sliderItems[position], sliderItems.size)
 }
 
-class SliderViewHolder(private val itemBinding: ItemSliderBinding, private val listener: SliderAdpater.OnItemClickListener) : RecyclerView.ViewHolder(itemBinding.root),
+class SliderViewHolder(
+    private val itemBinding: ItemSliderBinding,
+    private val listener: SliderAdpater.OnItemClickListener
+) : RecyclerView.ViewHolder(itemBinding.root),
     View.OnClickListener {
 
     private lateinit var sliderItem: SliderItem
 
     init {
-        Timber.e("SliderViewHolder init")
         itemBinding.root.setOnClickListener(this)
     }
 
     @SuppressLint("SetTextI18n")
+//  fun bind(item: SliderItem) {
     fun bind(item: SliderItem, size: Int) {
         this.sliderItem = item
 
@@ -48,13 +56,16 @@ class SliderViewHolder(private val itemBinding: ItemSliderBinding, private val l
         itemBinding.title.text = sliderItem.title
         itemBinding.contents.text = sliderItem.contents
 
-        itemBinding.pageNumber.text = (adapterPosition+1).toString()
+        itemBinding.pageNumber.text = (adapterPosition + 1).toString()
         itemBinding.pageSum.text = " / $size"
+
+        itemBinding.title.setOnClickListener {
+            listener.onClickedTitle(sliderItem.title)
+        }
     }
 
     override fun onClick(v: View?) {
-        Timber.e("ddddddddddd")
-        listener.onClickedImage(sliderItem.image)
+        listener.onClicked(sliderItem)
     }
 }
 

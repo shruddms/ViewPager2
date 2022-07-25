@@ -1,19 +1,17 @@
 package com.kyungeun.viewpager2
 
-import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.kyungeun.viewpager2.databinding.ActivityMainBinding
-import timber.log.Timber
-
+import com.makeramen.roundedimageview.RoundedImageView
 
 class MainActivity : AppCompatActivity(), SliderAdpater.OnItemClickListener {
 
@@ -30,18 +28,19 @@ class MainActivity : AppCompatActivity(), SliderAdpater.OnItemClickListener {
         setViewPager()
     }
 
+    //set demo data
     private fun setSliderItems() {
         sliderItems = ArrayList()
-        sliderItems.add(SliderItem(R.drawable.sample_1,"delicious meal 1","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_2,"delicious meal 2","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_3,"delicious meal 3","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_4,"delicious meal 4","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_5,"delicious meal 5","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_6,"delicious meal 6","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_7,"delicious meal 7","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_8,"delicious meal 8","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_9,"delicious meal 9","This is a sample about a delicious meal"))
-        sliderItems.add(SliderItem(R.drawable.sample_10,"delicious meal 10","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_1,"Delicious Meal 1","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_2,"Delicious Meal 2","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_3,"Delicious Meal 3","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_4,"Delicious Meal 4","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_5,"Delicious Meal 5","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_6,"Delicious Meal 6","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_7,"Delicious Meal 7","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_8,"Delicious Meal 8","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_9,"Delicious Meal 9","This is a sample about a delicious meal"))
+        sliderItems.add(SliderItem(R.drawable.sample_10,"Delicious Meal 10","This is a sample about a delicious meal"))
     }
 
     private fun setViewPager() {
@@ -62,7 +61,31 @@ class MainActivity : AppCompatActivity(), SliderAdpater.OnItemClickListener {
         binding.viewPager.setPageTransformer(compositePageTransformer);
     }
 
-    override fun onClickedImage(image: Int) {
+    //viewpager2 item click
+    override fun onClicked(item: SliderItem) {
+        dialogImage(item.image)
+    }
 
+    //viewpager2 item title click
+    override fun onClickedTitle(title: String) {
+        Toast.makeText(this.applicationContext, title, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun dialogImage(image: Int) {
+        val builder = AlertDialog.Builder(this)
+        val view: View = layoutInflater.inflate(R.layout.dialog_image, null)
+        builder.setView(view)
+        val dialog = builder.create()
+        val imageView = view.findViewById<View>(R.id.image) as RoundedImageView
+        imageView.setImageResource(image)
+
+        imageView.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        if(dialog.window != null) {
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+        dialog.show()
     }
 }
