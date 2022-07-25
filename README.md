@@ -9,7 +9,7 @@ Libraries used on the sample project
 * DataBinding
 
 # Demo
-![](./image/viewpager2.gif)
+![](https://user-images.githubusercontent.com/74607521/180742345-00be11e0-614f-45f4-940e-947be0020f1e.gif)
 
 
 Developed By
